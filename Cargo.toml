@@ -1,5 +1,5 @@
 [package]
-name = "emu_80802"
+name = "emu_8080"
 version = "0.1.0"
 edition = "2021"
 
