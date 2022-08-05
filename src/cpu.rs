@@ -10,7 +10,7 @@ pub struct CPU {
     pc: u16,
     //stack pointer
     sp: u16,
-    cycles: i32,
+    cycles: u64,
     pub rom: Vec<u8>,
 }
 
@@ -41,7 +41,7 @@ impl CPU {
                 println!("instruction: NOP");
                 self.increment_cycle(1);
             }
-            0x1 => self.lxi_r16_d16(self.b, self.c, 0, 0), // TODO
+            0x1 => self.lxi_r16_d16(self.b, self.c), // TODO
             _ => println!("instruction: UNKNOWN"),
         }
     }
@@ -54,7 +54,7 @@ impl CPU {
     }
 
     //helpers
-    fn increment_cycle(&mut self, n: i32) {
+    fn increment_cycle(&mut self, n: u64) {
         self.cycles += n;
     }
 
@@ -67,11 +67,12 @@ impl CPU {
     }
 
     //instruction
-    fn lxi_r16_d16(&mut self, mut r1: u8, mut r2: u8, lo: u8, hi: u8) {
+    fn lxi_r16_d16(&mut self, mut r1: u8, mut r2: u8) {
         //TODO
+        let lo = self.fetch_byte();
+        let hi = self.fetch_byte();
         r1 = lo;
         r2 = hi;
-        self.increment_cycle(3);
     }
 }
 
