@@ -1,10 +1,5 @@
-use std::fs::File;
-use std::io::Read;
-
-pub fn load_rom(path: String) -> [u8; 8192] {
-    let mut rom_file = File::open(path).unwrap();
-    let mut buffer = [0u8; 8192];
-    rom_file.read(&mut buffer).unwrap();
-    //println!("{:?}", buffer);
-    buffer
+pub fn load_rom(path: String) -> Vec<u8> {
+    let rom_file = std::fs::read(path).expect("Error");
+    // println!("{:?}", rom_file[0]);
+    rom_file
 }

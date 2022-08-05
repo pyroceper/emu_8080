@@ -11,7 +11,7 @@ pub struct CPU {
     //stack pointer
     sp: u16,
     cycles: i32,
-    pub rom: [u8; 8192],
+    pub rom: Vec<u8>,
 }
 
 impl CPU {
@@ -26,27 +26,22 @@ impl CPU {
             pc: 0,
             sp: 0,
             cycles: 0,
-            rom: [0; 8192],
+            rom: vec![0; 8192],
         }
     }
 
     pub fn execute(&mut self) {
         println!("Running"); //temp
 
-        let index = self.pc as usize;
-        let opcode = format!("{:X}", self.rom[index]);
-        self.increment_cycle(1);
-        // let opcode = opcode.parse::<i32>().unwrap();
-        println!("opcode: {:?}", opcode);
+        let opcode = self.fetch_byte();
+        println!("opcode: {:#02x}", opcode);
 
-        self.pc += 1;
-
-        match opcode.as_str() {
-            "0" => {
+        match opcode {
+            0x0 => {
                 println!("instruction: NOP");
                 self.increment_cycle(1);
             }
-            "01" => self.lxi_r16_d16(self.b, self.c, 0, 0), // TODO
+            0x1 => self.lxi_r16_d16(self.b, self.c, 0, 0), // TODO
             _ => println!("instruction: UNKNOWN"),
         }
     }
@@ -63,16 +58,15 @@ impl CPU {
         self.cycles += n;
     }
 
-    //FIX
-    fn fetch_byte(&mut self) -> String {
+    fn fetch_byte(&mut self) -> u8 {
         self.increment_cycle(1);
         let index = self.pc as usize;
-        let byte = format!("{:X}", self.rom[index]);
+        let byte = self.rom[index];
         self.pc += 1;
         byte
     }
 
-    //instructions
+    //instruction
     fn lxi_r16_d16(&mut self, mut r1: u8, mut r2: u8, lo: u8, hi: u8) {
         //TODO
         r1 = lo;
