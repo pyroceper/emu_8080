@@ -41,7 +41,9 @@ impl CPU {
                 println!("instruction: NOP");
                 self.increment_cycle(1);
             }
-            0x1 => self.lxi_r16_d16(self.b, self.c), // TODO
+            0x1 => {
+                (self.b, self.c) = self.lxi_r16_d16();
+            }, // TODO
             _ => println!("instruction: UNKNOWN"),
         }
     }
@@ -67,12 +69,11 @@ impl CPU {
     }
 
     //instruction
-    fn lxi_r16_d16(&mut self, mut r1: u8, mut r2: u8) {
+    fn lxi_r16_d16(&mut self) -> (u8, u8) {
         //TODO
         let lo = self.fetch_byte();
         let hi = self.fetch_byte();
-        r1 = lo;
-        r2 = hi;
+        (lo, hi)
     }
 }
 
